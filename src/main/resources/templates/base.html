@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:fragment="head">
+    <meta charset="UTF-8"/>
+    <title th:text="${title}">Flickz</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="/css/normalize.css"/>
+    <link rel="stylesheet" href="/css/styles.css"/>
+</head>
+<body>
+<nav th:fragment="navigation">
+    <ul>
+        <li><a href="/">home</a></li>
+        <li><a href="/reviews">all reviews</a></li>
+        <li><a href="/reviews/new">new reviews</a></li>
+        <li><a href="/login">log-in</a></li>
+        <li><a href="/logout">log-out</a></li>
+        <li><a href="/register">register</a></li>
+    </ul>
+</nav>
+</body>
+</html>
