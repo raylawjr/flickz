@@ -27,6 +27,8 @@ public class User {
     @Size(min=3, max=15)
     private String password;
 
+    @NotNull
+    @Size(min=3, max=15)
     private String password_conf;
 
     @ManyToMany
