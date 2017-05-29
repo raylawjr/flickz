@@ -1,5 +1,6 @@
 package org.launchcode.Flickz.models.data;
 
+import java.util.List;
 import org.launchcode.Flickz.models.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -13,5 +14,9 @@ import javax.transaction.Transactional;
 @Repository
 @Transactional
 public interface UserDao extends CrudRepository<User, Long>{
-    User findByUsername(String username);
+
+    <List>User findByUsername(String username);
+
+    User findById(int id);
+
 }

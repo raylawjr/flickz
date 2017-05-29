@@ -1,5 +1,6 @@
 package org.launchcode.Flickz.controllers;
 
+import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.launchcode.Flickz.models.User;
 import org.launchcode.Flickz.models.data.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 /**
@@ -18,10 +20,7 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping("")
-public class UserController {
-
-    @Autowired
-    private UserDao userDao;
+public class UserController extends AbstractController {
 
     @RequestMapping(value = "")
     public String index(Model model){
@@ -34,14 +33,26 @@ public class UserController {
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String DisplayRegistrationForm(Model model) {
         model.addAttribute(new User());
-        model.addAttribute("title", "Create Account");
+        model.addAttribute("title", "Create Flickz Account");
         return "registration";
     }
 
     @RequestMapping(value = "/register",  method = RequestMethod.POST)
-    public String ProcessRegistrationForm(Model model, @ModelAttribute @Valid User user, Errors errors, String password_conf){
+    public String ProcessRegistrationForm(HttpServletRequest request, Model model, @ModelAttribute @Valid User user, Errors errors, String password_conf){
 
         model.addAttribute(user);
+        HttpSession session = request.getSession();
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        User existingUser = userDao.findByUsername(username);
+        // if user already exists
+        if (existingUser != null) {
+            model.addAttribute("username_error", "A user with that username already exists! Please choose a different username.");
+            model.addAttribute("title", "Create Flickz Account");
+            return "registration";
+        }
+
+        // if passwords don't match
         boolean passwordsMatch = true;
         if (user.getPassword() == null || password_conf == null
                 || !user.getPassword().equals(password_conf)) {
@@ -52,9 +63,34 @@ public class UserController {
 
         if (!errors.hasErrors() && passwordsMatch) {
             userDao.save(user);
-            return "index";
+            return "redirect:";
+        }
+        model.addAttribute("title", "Create Flickz Account");
+        return "registration";
+    }
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String DisplayLoginForm(Model model){
+        model.addAttribute("title", "Log-in to Flickz");
+        return "login";
+    }
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public String ProcessLoginForm(HttpServletRequest request, Model model){
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+
+        User user = userDao.findByUsername(username);
+
+        if (user == null) {
+            model.addAttribute("username_error", "There is no user with username: <b>"+username+"</b>");
+            return "login";
         }
 
-        return "registration";
+        if (!user.getPassword().equals(password)) {
+            model.addAttribute("password_error", "Invalid password");
+            return "login";
+        }
+
+        setUserInSession(request.getSession(), user);
+        return "redirect:";
     }
 }
