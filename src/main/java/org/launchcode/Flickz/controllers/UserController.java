@@ -93,4 +93,10 @@ public class UserController extends AbstractController {
         setUserInSession(request.getSession(), user);
         return "redirect:";
     }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logout(HttpServletRequest request){
+        request.getSession().invalidate();
+        return "redirect:";
+    }
 }
