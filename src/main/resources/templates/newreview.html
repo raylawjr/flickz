@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="base :: head"></head>
+<body class="container">
+<h1 th:text="${title}">Default Title</h1>
+<div class="container">
+<form method="post" th:object="${review}">
+    <label th:for="film">Film Name</label>
+    <input type="text" name="film" th:field="*{film}"/>
+
+    <label th:for="title">Review Title</label>
+        <input type="text" name="title" th:field="*{title}" />
+
+    <label th:for="body">Review Body</label>
+        <textarea name="body" th:field="*{body}"></textarea>
+
+    <label th:for="image_url">Movie Poster</label>
+        <input type="text" name="image_url" th:field="*{image_url}"/>
+    <span>URL link to Movie Poster (optional)</span>
+    <div class="error" th:text="${error}"></div>
+    <input type="submit" value="Post Review"></input>
+</form>
+</div>
+</body>
+</html>

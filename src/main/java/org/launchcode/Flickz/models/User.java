@@ -6,6 +6,8 @@ package org.launchcode.Flickz.models;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 
@@ -31,9 +33,9 @@ public class User {
     @Size(min=3, max=15)
     private String password_conf;
 
-    @ManyToMany
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
+    @OneToMany
+    @JoinColumn(name = "author_id")
+    private List<Review> reviews = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -67,11 +69,15 @@ public class User {
         this.password_conf = password_conf;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    protected void addReview(Review review){
+        reviews.add(review);
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 }

@@ -1,6 +1,7 @@
 package org.launchcode.Flickz.controllers;
 
 import org.launchcode.Flickz.models.User;
+import org.launchcode.Flickz.models.data.ReviewDao;
 import org.launchcode.Flickz.models.data.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,10 +16,13 @@ public class AbstractController {
     @Autowired
     protected UserDao userDao;
 
+    @Autowired
+    protected ReviewDao reviewDao;
+
     public static final String userSessionKey = "user_id";
 
     protected User getUserFromSession(HttpSession session){
-        Integer userId = (Integer) session.getAttribute(userSessionKey);
+        Long userId = (Long) session.getAttribute(userSessionKey);
         return userId == null ? null : userDao.findById(userId);
     }
 
