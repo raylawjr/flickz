@@ -6,10 +6,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * Created by melissa on 5/29/17.
@@ -51,5 +53,21 @@ public class ReviewController extends AbstractController {
         reviewDao.save(newreview);
         return "redirect:";
 
+    }
+
+    @RequestMapping(value = "/review/{username}/{id}", method = RequestMethod.GET)
+    public String DisplaySingleReview(@PathVariable String username, @PathVariable long id, Model model) {
+        Review review = reviewDao.findById(id);
+        model.addAttribute(review);
+        return "review";
+    }
+
+    @RequestMapping(value = "/review/{username}", method = RequestMethod.GET)
+    public String DisplayAllReviewsByUser(@PathVariable String username, Model model) {
+        User user = userDao.findByUsername(username);
+        List<Review> reviews = user.getReviews();
+        model.addAttribute("title", "All reviews by "+user.getUsername());
+        model.addAttribute("reviews", reviews);
+        return "allreviews";
     }
 }

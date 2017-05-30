@@ -8,10 +8,6 @@
 
 <nav th:replace="base :: navigation"></nav>
 
-Welcome to Flickz.  Register, Log-in or browse our reviews!
-
-<h2>Latest Reviews:</h2>
-
 <div th:each="review : ${reviews}">
 
     <h2><a th:href="'/review/' + ${review.author.username} + '/' + ${review.id}" th:text="${review.title}"></a></h2>

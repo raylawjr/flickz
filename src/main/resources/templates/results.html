@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="base :: head"></head>
+
+<body class="container">
+
+<h1 th:text="${title}">Default Title</h1>
+<nav th:replace="base :: navigation"></nav>
+<div class="error" th:text="${author_error}"></div>
+<p th:unless="${reviews} and ${reviews.size()}">No reviews found.</p>
+<table class="table">
+
+    <tr th:each="review : ${reviews}">
+        <td> <a th:href="'/review/' + ${review.author.username} + '/' + ${review.id}" th:text="${review.title}"></a></td>
+        <td> <a th:href="'/review/' + ${review.author.username}" th:text="${review.author.username}"></a></td>
+    </tr>
+
+</table>
+<!--<div class="container">
+    <p class="error" th:text="${error}"></p>
+    <div th:each="review : ${reviews}">
+
+        <h2><a th:href="'/review/' + ${review.author.username} + '/' + ${review.id}" th:text="${review.title}"></a></h2>
+        <p class="review-author">written by <a th:href="'/review/' + ${review.author.username}" th:text="${review.author.username}"></a></p>
+
+    </div>
+
+</div>-->
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="base :: head"></head>
+
+<body class="container">
+
+<h1 th:text="${title}">Default Title</h1>
+<nav th:replace="base :: navigation"></nav>
+<div class="error" th:text="${author_error}"></div>
+<div class="container">
+    <p class="error" th:text="${error}"></p>
+    <form method="post" class="form-search" style="width:600px;">
+        <div class="form-group">
+            <label th:for="film">Movie Name</label>
+            <input class="form-control" name= "film" placeholder="Film Name"/>
+        </div>
+        <input type="submit" value="Search"/>
+    </form>
+</div>
+</body>
+</html>

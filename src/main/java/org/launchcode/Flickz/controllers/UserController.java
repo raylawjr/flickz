@@ -1,6 +1,7 @@
 package org.launchcode.Flickz.controllers;
 
 
+import org.launchcode.Flickz.models.Review;
 import org.launchcode.Flickz.models.User;
 import org.launchcode.Flickz.models.data.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * Created by melissa on 5/22/17.
@@ -34,6 +36,10 @@ public class UserController extends AbstractController {
         else {
             model.addAttribute("title", "Welcome to Flickz, "+author.getUsername());
         }
+
+        List<Review> reviews = reviewDao.findAll();
+        model.addAttribute("reviews", reviews);
+
         return "index";
     }
 

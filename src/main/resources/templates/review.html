@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="base :: head"></head>
+
+<body class="container">
+    <h1 th:text="${title}">Default Title</h1>
+        <p class="error" th:text="${error}"></p>
+
+        <h2 class="review-title" th:text="${review.title}"></h2>
+        <p class="review-body" th:text="${review.body}"></p>
+        <p class="review-author"> written by
+            <a th:href="'/review/' + ${review.author.username}" th:text="${review.author.username}">
+
+            </a> on <span th:text="${#dates.format(review.created, 'MM-dd-yyyy')}"></span>
+        </p>
+
+
+</body>
+</html>
