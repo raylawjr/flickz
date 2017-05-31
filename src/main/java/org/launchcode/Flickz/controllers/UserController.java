@@ -51,12 +51,12 @@ public class UserController extends AbstractController {
     }
 
     @RequestMapping(value = "/register",  method = RequestMethod.POST)
-    public String ProcessRegistrationForm(HttpServletRequest request, Model model, @ModelAttribute @Valid User user, Errors errors, String password_conf){
+    public String ProcessRegistrationForm(HttpServletRequest request, Model model){
 
-        model.addAttribute(user);
         HttpSession session = request.getSession();
         String username = request.getParameter("username");
-        String password = request.getParameter("password");
+        String password = request.getParameter("passwordHash");
+        String password_conf = request.getParameter("password_conf");
         User existingUser = userDao.findByUsername(username);
         // if user already exists
         if (existingUser != null) {
@@ -65,17 +65,32 @@ public class UserController extends AbstractController {
             return "registration";
         }
 
-        // if passwords don't match
-        boolean passwordsMatch = true;
-        if (user.getPassword() == null || password_conf == null
-                || !user.getPassword().equals(password_conf)) {
-            passwordsMatch = false;
-            user.setPassword("");
-            model.addAttribute("verifyError", "Passwords must match");
+        if (!User.isValidUsername(username)) {
+            model.addAttribute("username_error", "Usernames must be 5-16 characters long, start with a letter, and contain only letters, numbers, _, or -");
+            model.addAttribute("title", "Create Flickz Account");
+            return "registration";
         }
 
-        if (!errors.hasErrors() && passwordsMatch) {
+        if (!User.isValidPassword(password)) {
+            model.addAttribute("password_error", "Passwords must be 6-20 characters long and may not contain spaces");
+            model.addAttribute("title", "Create Flickz Account");
+            return "registration";
+        }
+
+        // if passwords don't match
+        boolean passwordsMatch = true;
+        if (password == null || password_conf == null
+                || !password.equals(password_conf)) {
+            passwordsMatch = false;
+            model.addAttribute("verifyError", "Passwords must match");
+            model.addAttribute("title", "Create Flickz Account");
+            return "registration";
+        }
+
+        if (passwordsMatch) {
+            User user = new User(username, password);
             userDao.save(user);
+            setUserInSession(session, user);
             return "redirect:";
         }
         model.addAttribute("title", "Create Flickz Account");
@@ -98,7 +113,7 @@ public class UserController extends AbstractController {
             return "login";
         }
 
-        if (!user.getPassword().equals(password)) {
+        if (!user.isMatchingPassword(password)) {
             model.addAttribute("password_error", "Invalid password");
             return "login";
         }
