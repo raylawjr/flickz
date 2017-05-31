@@ -43,13 +43,14 @@ public class ReviewController extends AbstractController {
         String film = request.getParameter("film");
         String title = request.getParameter("title");
         String body = request.getParameter("body");
+        String image_url = request.getParameter("image_url");
 
         if (author == null){
             model.addAttribute("author_error", "You must be logged in to post a new review!");
             return "redirect:login";
         }
 
-        Review newreview = new Review(film, title, body, author);
+        Review newreview = new Review(film, title, body, image_url, author);
         reviewDao.save(newreview);
         return "redirect:";
 
@@ -59,6 +60,7 @@ public class ReviewController extends AbstractController {
     public String DisplaySingleReview(@PathVariable String username, @PathVariable long id, Model model) {
         Review review = reviewDao.findById(id);
         model.addAttribute(review);
+        model.addAttribute("title", "Review for "+review.getFilm()+" by "+review.getAuthor().getUsername());
         return "review";
     }
 
@@ -67,6 +69,14 @@ public class ReviewController extends AbstractController {
         User user = userDao.findByUsername(username);
         List<Review> reviews = user.getReviews();
         model.addAttribute("title", "All reviews by "+user.getUsername());
+        model.addAttribute("reviews", reviews);
+        return "allreviews";
+    }
+
+    @RequestMapping(value = "/allreviews", method = RequestMethod.GET)
+    public String DisplayAllReviewsByAllUsers(Model model) {
+        List<Review> reviews = reviewDao.findAll();
+        model.addAttribute("title", "All Flickz Reviews");
         model.addAttribute("reviews", reviews);
         return "allreviews";
     }

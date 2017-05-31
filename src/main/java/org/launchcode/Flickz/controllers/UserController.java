@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,12 +35,21 @@ public class UserController extends AbstractController {
 
         if (author == null){
             model.addAttribute("title", "Welcome to Flickz, guest");
+            model.addAttribute("message", "Register, Log-in or browse our reviews!");
         }
         else {
             model.addAttribute("title", "Welcome to Flickz, "+author.getUsername());
         }
 
         List<Review> reviews = reviewDao.findAll();
+        Collections.sort(reviews, new Comparator<Review>() {
+                    public int compare(Review r1, Review r2) {
+                        return r2.getCreated().compareTo(r1.getCreated());
+                    }
+                });
+        if (reviews.size() > 5){
+            reviews.subList(5, reviews.size()).clear();
+        }
         model.addAttribute("reviews", reviews);
 
         return "index";

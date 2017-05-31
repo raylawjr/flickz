@@ -11,7 +11,8 @@
 <div th:each="review : ${reviews}">
 
     <h2><a th:href="'/review/' + ${review.author.username} + '/' + ${review.id}" th:text="${review.title}"></a></h2>
-    <p class="review-author">written by <a th:href="'/review/' + ${review.author.username}" th:text="${review.author.username}"></a></p>
+    <p class="review-author">written by <a th:href="'/review/' + ${review.author.username}" th:text="${review.author.username}"></a>
+        on <span th:text="${#dates.format(review.created, 'EEE, d MMM yyyy HH:mm:ss Z')}"></span></p>
 
 </div>
 

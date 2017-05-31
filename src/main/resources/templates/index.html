@@ -6,17 +6,17 @@
 
 <h1 th:text="${title}">Default Title</h1>
 
-<nav th:replace="base :: navigation"></nav>
+<div th:text="${message}">Register, Log-in or browse our reviews!</div>
 
-Welcome to Flickz.  Register, Log-in or browse our reviews!
+<nav th:replace="base :: navigation"></nav>
 
 <h2>Latest Reviews:</h2>
 
 <div th:each="review : ${reviews}">
 
     <h2><a th:href="'/review/' + ${review.author.username} + '/' + ${review.id}" th:text="${review.title}"></a></h2>
-    <p class="review-author">written by <a th:href="'/review/' + ${review.author.username}" th:text="${review.author.username}"></a></p>
-
+    <p class="review-author">written by <a th:href="'/review/' + ${review.author.username}" th:text="${review.author.username}"></a>
+        on <span th:text="${#dates.format(review.created, 'EEE, d MMM yyyy HH:mm:ss Z')}"></span></p>
 </div>
 
 </body>

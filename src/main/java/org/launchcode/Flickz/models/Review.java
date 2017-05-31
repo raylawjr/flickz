@@ -36,12 +36,13 @@ public class Review {
 
     private Date modified = new Date();
 
-    public Review(String film, String title, String body, User author) {
+    public Review(String film, String title, String body, String image_url, User author) {
 
         super();
         this.film = film;
         this.title = title;
         this.body = body;
+        this.image_url = image_url;
         this.author = author;
         this.created = new Date();
         this.updated();
