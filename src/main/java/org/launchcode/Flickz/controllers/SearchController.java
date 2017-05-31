@@ -29,8 +29,9 @@ public class SearchController extends AbstractController {
         List<Review> reviews = reviewDao.findAll();
         List<Review> results = new ArrayList<>();
         String query = request.getParameter("film");
+        String lquery = query.toLowerCase();
         for (int i = 0; i < reviews.size(); i++){
-            if (reviews.get(i).getFilm().equals(query)){
+            if (reviews.get(i).getFilm().toLowerCase().contains(lquery)){
                 results.add(reviews.get(i));
             }
         }

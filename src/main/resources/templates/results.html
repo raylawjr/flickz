@@ -12,19 +12,10 @@
 
     <tr th:each="review : ${reviews}">
         <td> <a th:href="'/review/' + ${review.author.username} + '/' + ${review.id}" th:text="${review.title}"></a></td>
+        <td th:text="${review.film}"></td>
         <td> <a th:href="'/review/' + ${review.author.username}" th:text="${review.author.username}"></a></td>
     </tr>
 
 </table>
-<!--<div class="container">
-    <p class="error" th:text="${error}"></p>
-    <div th:each="review : ${reviews}">
-
-        <h2><a th:href="'/review/' + ${review.author.username} + '/' + ${review.id}" th:text="${review.title}"></a></h2>
-        <p class="review-author">written by <a th:href="'/review/' + ${review.author.username}" th:text="${review.author.username}"></a></p>
-
-    </div>
-
-</div>-->
 </body>
 </html>
